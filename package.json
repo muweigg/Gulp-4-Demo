@@ -1,0 +1,39 @@
+{
+  "name": "gulp-4-demo",
+  "version": "1.0.0",
+  "description": "Gulp 4 demo.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "gulp dev",
+    "prod": "gulp prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MuWei",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "del": "^3.0.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-clean-css": "^3.7.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-css-adjust-url-path": "^1.0.2",
+    "gulp-data": "^1.2.1",
+    "gulp-empty": "^0.1.2",
+    "gulp-filter": "^5.0.0",
+    "gulp-if": "^2.0.2",
+    "gulp-nunjucks": "^3.0.0",
+    "gulp-rev": "^8.0.0",
+    "gulp-rev-collector": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-server-livereload": "^1.9.2",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp.spritesmith": "^6.5.1",
+    "merge-stream": "^1.0.1"
+  }
+}

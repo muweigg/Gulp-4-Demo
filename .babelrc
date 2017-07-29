@@ -1,0 +1,11 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "Chrome >= 23", "ff >= 21", "ie >= 10"]
+      }
+    }],
+    "es2015",
+    "stage-3"
+  ]
+}

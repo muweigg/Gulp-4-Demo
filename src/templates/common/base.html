@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+    <title>Gulp 4</title>
+    {% block cssbefore %}{% endblock %}
+    {% block css %}{% endblock %}
+    {% include './includes.html' %}
+</head>
+<body>
+    {% block header %}
+        {% include './header.html' %}
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+    
+    {% block footer %}
+        {% include './footer.html' %}
+    {% endblock %}
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>
