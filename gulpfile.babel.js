@@ -207,10 +207,13 @@ gulp.task('webserver',
             defaultFile: 'index.html',
             host: 'localhost',
             port: '5555',
-            livereload: true,
+            livereload: {
+                enable: true,
+                filter: function (filePath, cb) {
+                    cb(!/\.s(a|c)ss$|node_modules/.test(filePath));
+                }
+            },
             open: true,
-            enable: true,
-            filter: (filePath, cb) => cb(!/\.scss$|node_modules/.test(filePath))
         })));
 
 gulp.task('prodMode', () => {
