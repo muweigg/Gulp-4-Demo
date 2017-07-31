@@ -65,7 +65,7 @@ const paths = {
         images: 'src/assets/images'
     },
     process: ['dist/rev/**/*.json', 'dist/**/*.css', 'dist/**/*.html'],
-    rebaseTo: 'dist/'
+    rebaseTo: 'src/dist/'
 };
 
 gulp.task('vendors:js:compile',
@@ -142,7 +142,7 @@ gulp.task('sprites', () => {
     const spriteData = gulp.src(paths.src.sprites).pipe(spritesmith({
         imgName: 'icons.png',
         cssName: 'icons.scss',
-        imgPath: '../../../assets/images/icons.png',
+        imgPath: '../../assets/images/icons.png',
         padding: 10,
         imgOpts: { quality: 100 },
         algorithm : 'top-down',
