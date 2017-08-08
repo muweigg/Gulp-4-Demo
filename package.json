@@ -1,7 +1,7 @@
 {
-  "name": "gulp-4-demo",
+  "name": "gulp",
   "version": "1.0.0",
-  "description": "Gulp 4 demo.",
+  "description": "This is a quick start creating a multi-page application with Gulp 4.",
   "main": "index.js",
   "scripts": {
     "dev": "gulp dev",
