@@ -102,7 +102,6 @@ gulp.task('js:compile', () => {
     return gulp.src(paths.src.js)
         .pipe(f)
         // .pipe(cssAdjustUrlPath(urlPattern))
-        // .pipe(babel())
         .pipe(tsCompiler())
         .pipe(uglify())
         .pipe(isProd ? rev() : empty())
