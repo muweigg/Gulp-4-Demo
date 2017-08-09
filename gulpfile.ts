@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const babel = require('gulp-babel');
+const ts = require('gulp-typescript');
 const gulpif = require('gulp-if');
 const prefixer = require('gulp-autoprefixer');
 const concat = require('gulp-concat');
@@ -17,6 +17,7 @@ const cleanCSS = require('gulp-clean-css');
 const spritesmith = require('gulp.spritesmith');
 const merge = require('merge-stream');
 const empty = require("gulp-empty");
+const tsCompiler = ts.createProject('./tsconfig.json');
 
 const del = require('del');
 
@@ -29,7 +30,7 @@ const exts = '{jpg,jpeg,png,svg,ttf,eot,woff,woff2}';
 
 const paths = {
     src: {
-        js: ['src/js/**/*.js'],
+        js: ['src/js/**/*.ts'],
         css: ['src/css/**/*.css'],
         scss: ['src/scss/**/*.scss'],
         assets: [`src/assets/**/*.${exts}`],
@@ -101,7 +102,8 @@ gulp.task('js:compile', () => {
     return gulp.src(paths.src.js)
         .pipe(f)
         // .pipe(cssAdjustUrlPath(urlPattern))
-        .pipe(babel())
+        // .pipe(babel())
+        .pipe(tsCompiler())
         .pipe(uglify())
         .pipe(isProd ? rev() : empty())
         .pipe(gulp.dest(paths.output.js))
