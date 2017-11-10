@@ -72,7 +72,7 @@ const paths = {
 gulp.task('vendors:js:compile',
     () => gulp.src(paths.common.js)
         .pipe(concat('vendors.js'))
-        .pipe(uglify())
+        .pipe(isProd ? uglify() : empty())
         .pipe(isProd ? rev() : empty())
         .pipe(gulp.dest(paths.output.js))
         .pipe(isProd ? rev.manifest('vendors-js-manifest.json') : empty())
@@ -103,7 +103,7 @@ gulp.task('js:compile', () => {
         .pipe(f)
         // .pipe(cssAdjustUrlPath(urlPattern))
         .pipe(tsCompiler())
-        .pipe(uglify())
+        .pipe(isProd ? uglify() : empty())
         .pipe(isProd ? rev() : empty())
         .pipe(gulp.dest(paths.output.js))
         .pipe(isProd ? rev.manifest('js-manifest.json') : empty())
