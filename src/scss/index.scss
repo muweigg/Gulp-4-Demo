@@ -1,12 +1,9 @@
-h1 {
-    color: gray;
-    display: flex;
-    justify-content: center;
-}
-
-.test {
+main {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-flow: column nowrap;
+
+    h1 {
+        color: gray;
+    }
 }

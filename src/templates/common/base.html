@@ -7,8 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
     <title>Gulp 4</title>
     {% block cssbefore %}{% endblock %}
+    <link rel="stylesheet" href="./css/vendors.css">
     {% block css %}{% endblock %}
-    {% include './includes.html' %}
+    <script src="./js/vendors.js"></script>
 </head>
 <body>
     {% block header %}

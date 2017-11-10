@@ -1,0 +1,75 @@
+@mixin cssarrow ($offset-y, $offset-x, $size, $bgc: transparent, $bdc: transparent, $direction: bottom, $bdSize: 1px) {
+    &:after, &:before {
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(0, 0, 0, 0);
+    }
+    @if ($direction == bottom) {
+        &:after, &:before { right: $offset-x; }
+        &:after { border-width: $size; margin-right: 0px; }
+        &:before { border-width: $size + $bdSize * 2; margin-right: -2px; }
+        &:after { top: $offset-y; bottom: initial; border-top-color: $bgc; }
+        &:before { top: $offset-y; bottom: initial; border-top-color: $bdc; }
+    } @else if ($direction == top) {
+        &:after, &:before { right: $offset-x; }
+        &:after { border-width: $size; margin-right: 0px; }
+        &:before { border-width: $size + $bdSize * 2; margin-right: -2px; }
+        &:after { bottom: $offset-y; top: initial; border-bottom-color: $bgc; }
+        &:before { bottom: $offset-y; top: initial; border-bottom-color: $bdc; }
+    } @else if ($direction == right) {
+        &:after, &:before { top: $offset-y; }
+        &:after { border-width: $size; margin-top: 0px; }
+        &:before { border-width: $size + $bdSize * 2; margin-top: -2px; }
+        &:after { left: $offset-x; right: initial; border-left-color: $bgc; }
+        &:before { left: $offset-x; right: initial; border-left-color: $bdc; }
+    } @else if ($direction == left) {
+        &:after, &:before { top: $offset-y; }
+        &:after { border-width: $size; margin-top: 0px; }
+        &:before { border-width: $size + $bdSize * 2; margin-top: -2px; }
+        &:after { right: $offset-x; left: initial; border-right-color: $bgc; }
+        &:before { right: $offset-x; left: initial; border-right-color: $bdc; }
+    }
+    @content;
+}
+
+@mixin cssarrowrem ($offset-y, $offset-x, $size, $bgc: transparent, $bdc: transparent, $direction: bottom, $bdSize: 0.0156rem) {
+    &:after, &:before {
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(0, 0, 0, 0);
+    }
+    @if ($direction == bottom) {
+        &:after, &:before { right: $offset-x; }
+        &:after { border-width: $size; margin-right: 0px; }
+        &:before { border-width: $size + $bdSize * 2; margin-right: -0.0313rem; }
+        &:after { top: $offset-y; bottom: initial; border-top-color: $bgc; }
+        &:before { top: $offset-y; bottom: initial; border-top-color: $bdc; }
+    } @else if ($direction == top) {
+        &:after, &:before { right: $offset-x; }
+        &:after { border-width: $size; margin-right: 0px; }
+        &:before { border-width: $size + $bdSize * 2; margin-right: -0.0313rem; }
+        &:after { bottom: $offset-y; top: initial; border-bottom-color: $bgc; }
+        &:before { bottom: $offset-y; top: initial; border-bottom-color: $bdc; }
+    } @else if ($direction == right) {
+        &:after, &:before { top: $offset-y; }
+        &:after { border-width: $size; margin-top: 0px; }
+        &:before { border-width: $size + $bdSize * 2; margin-top: -0.0313rem; }
+        &:after { left: $offset-x; right: initial; border-left-color: $bgc; }
+        &:before { left: $offset-x; right: initial; border-left-color: $bdc; }
+    } @else if ($direction == left) {
+        &:after, &:before { top: $offset-y; }
+        &:after { border-width: $size; margin-top: 0px; }
+        &:before { border-width: $size + $bdSize * 2; margin-top: -0.0313rem; }
+        &:after { right: $offset-x; left: initial; border-right-color: $bgc; }
+        &:before { right: $offset-x; left: initial; border-right-color: $bdc; }
+    }
+    @content;
+}

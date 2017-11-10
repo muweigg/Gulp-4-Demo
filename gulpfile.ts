@@ -39,15 +39,14 @@ const paths = {
     },
     common: {
         js: [
-            'src/js/common/**/vue.js',
-            'src/js/common/**/jquery*.js',
+            'src/js/common/third-party/high-priority/**/*.js',
             'src/js/common/**/*.js',
         ],
         css: [
-            'src/css/common/**/normalize.css',
-            'src/scss/common/**/common.scss',
+            'src/css/common/high-priority/**/*.css',
+            'src/scss/common/high-priority/**/*.scss',
             'src/css/common/**/*.css',
-            'src/scss/common/*.scss',
+            'src/scss/common/*.scss'
         ],
     },
     filter: {
@@ -62,6 +61,7 @@ const paths = {
         js: 'dist/js',
         css: 'dist/css',
         scss: 'src/scss/common',
+        sprites: 'src/scss/common/_',
         assets: 'dist/assets',
         images: 'src/assets/images'
     },
@@ -80,16 +80,16 @@ gulp.task('vendors:js:compile',
 
 gulp.task('vendors:css:compile',
     () => gulp.src(paths.common.css)
-        .pipe(concat('vendors.scss'))
         .pipe(sass().on('error', sass.logError))
+        .pipe(concat('vendors.css'))
         .pipe(prefixer({
             browsers: ['> 5%', 'ie >= 9', 'ff >= 28', 'Chrome >= 21'],
             cascade: false
         }))
         .pipe(
             isProd
-                ? cleanCSS({ level: { 1: { specialComments: false }}, rebaseTo: paths.rebaseTo })
-                : cleanCSS({ format: 'beautify', rebaseTo: paths.rebaseTo })
+            ? cleanCSS({ level: { 1: { specialComments: false }}, rebaseTo: paths.rebaseTo })
+            : cleanCSS({ format: 'beautify', rebaseTo: paths.rebaseTo })
         )
         .pipe(isProd ? rev() : empty())
         // .pipe(cssAdjustUrlPath(urlPattern))
@@ -142,8 +142,8 @@ gulp.task('template:compile', () => {
 gulp.task('sprites', () => {
     const spriteData = gulp.src(paths.src.sprites).pipe(spritesmith({
         imgName: 'icons.png',
-        cssName: 'icons.scss',
-        imgPath: '../../assets/images/icons.png',
+        cssName: '_icons.scss',
+        imgPath: '../../../assets/images/icons.png',
         padding: 10,
         imgOpts: { quality: 100 },
         algorithm : 'top-down',
@@ -154,7 +154,7 @@ gulp.task('sprites', () => {
         .pipe(gulp.dest(paths.output.images));
 
     const cssStream = spriteData.css
-        .pipe(gulp.dest(paths.output.scss));
+        .pipe(gulp.dest(paths.output.sprites));
 
     return merge(imgStream, cssStream);
 });
