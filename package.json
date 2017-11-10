@@ -11,7 +11,9 @@
   "author": "MuWei",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^8.0.31",
+    "@types/jquery": "^3.2.16",
+    "@types/lodash": "^4.14.84",
+    "@types/node": "^8.0.50",
     "del": "^3.0.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-autoprefixer": "^4.0.0",
@@ -23,17 +25,17 @@
     "gulp-filter": "^5.0.1",
     "gulp-if": "^2.0.2",
     "gulp-nunjucks": "^3.0.0",
-    "gulp-rev": "^8.0.0",
+    "gulp-rev": "^8.1.0",
     "gulp-rev-collector": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-server-livereload": "^1.9.2",
     "gulp-sourcemaps": "^2.6.1",
-    "gulp-typescript": "^3.2.2",
+    "gulp-typescript": "^3.2.3",
     "gulp-uglify": "^3.0.0",
     "gulp.spritesmith": "^6.5.1",
     "merge-stream": "^1.0.1",
     "ts-node": "^3.3.0",
     "tslib": "^1.8.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.6.1"
   }
 }
