@@ -23,13 +23,13 @@
   version "3.2.16"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.2.16.tgz#04419c404a3194350e7d3f339a90e72c88db3111"
 
-"@types/lodash@^4.14.84":
-  version "4.14.84"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.84.tgz#ede7e6bbb4f0d35adf8b32d57b44bf125f7a2a41"
+"@types/lodash@^4.14.85":
+  version "4.14.85"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.85.tgz#a16fbf942422f6eca5622b6910492c496c35069b"
 
-"@types/node@^8.0.50":
-  version "8.0.50"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.50.tgz#dc545448e128c88c4eec7cd64025fcc3b7604541"
+"@types/node@^8.0.53":
+  version "8.0.53"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.53.tgz#396b35af826fa66aad472c8cb7b8d5e277f4e6d8"
 
 a-sync-waterfall@^1.0.0:
   version "1.0.0"
@@ -1524,6 +1524,12 @@ gulp-match@^1.0.3:
   dependencies:
     minimatch "^3.0.3"
 
+gulp-merge@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/gulp-merge/-/gulp-merge-0.1.1.tgz#a462ee01177a8ea7c460f0ea89ad542ec752ba37"
+  dependencies:
+    through2 "~1.1.1"
+
 gulp-nunjucks@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/gulp-nunjucks/-/gulp-nunjucks-3.0.0.tgz#77cb31d61632a1ae10d2e1f8c0a8cf82659fcf47"
@@ -1532,9 +1538,9 @@ gulp-nunjucks@^3.0.0:
     nunjucks "^3.0.0"
     through2 "^2.0.0"
 
-gulp-rev-collector@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/gulp-rev-collector/-/gulp-rev-collector-1.2.2.tgz#90da1ad3d22e788bca31f7796ad28c1d28efd0fb"
+gulp-rev-collector@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/gulp-rev-collector/-/gulp-rev-collector-1.2.3.tgz#53597b5cb83061cdf20deb45002e4042288ecdf3"
   dependencies:
     gulp-util "^3.0.0"
     through2 ">=0.5.1"
@@ -1654,9 +1660,9 @@ gulp-util@3.0.8, gulp-util@^3.0, gulp-util@^3.0.0, gulp-util@^3.0.6, gulp-util@^
     through2 "^2.0.0"
     vinyl "^0.5.0"
 
-gulp.spritesmith@^6.5.1:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/gulp.spritesmith/-/gulp.spritesmith-6.5.1.tgz#e009f8b5da142ed0c7c8943c3e46e9fce2c31982"
+gulp.spritesmith@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/gulp.spritesmith/-/gulp.spritesmith-6.7.0.tgz#9f4eb2e83194f9a7bda8208dd34f7c52056f3e54"
   dependencies:
     async "~2.1.5"
     gulp-util "~3.0.8"
@@ -3059,6 +3065,15 @@ read-pkg@^1.0.0:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
+"readable-stream@>=1.1.13-1 <1.2.0-0", readable-stream@~1.1.9:
+  version "1.1.14"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.1"
+    isarray "0.0.1"
+    string_decoder "~0.10.x"
+
 readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.4, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.1.5, readable-stream@^2.2.2:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.3.tgz#368f2512d79f9d46fdfc71349ae7878bbc1eb95c"
@@ -3070,15 +3085,6 @@ readable-stream@^2.0.0, readable-stream@^2.0.1, readable-stream@^2.0.2, readable
     safe-buffer "~5.1.1"
     string_decoder "~1.0.3"
     util-deprecate "~1.0.1"
-
-readable-stream@~1.1.9:
-  version "1.1.14"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
-  dependencies:
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "0.0.1"
-    string_decoder "~0.10.x"
 
 readable-stream@~2.0.0:
   version "2.0.6"
@@ -3710,6 +3716,13 @@ through2@~0.5.1:
   dependencies:
     readable-stream "~1.0.17"
     xtend "~3.0.0"
+
+through2@~1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/through2/-/through2-1.1.1.tgz#0847cbc4449f3405574dbdccd9bb841b83ac3545"
+  dependencies:
+    readable-stream ">=1.1.13-1 <1.2.0-0"
+    xtend ">=4.0.0 <4.1.0-0"
 
 through@^2.3.4:
   version "2.3.8"
