@@ -26,7 +26,7 @@ del.sync('./dist');
 let isProd = false;
 
 const urlPattern = /(url\(['"]?)[/]?()/g;
-const exts = '{jpg,jpeg,png,svg,ttf,eot,woff,woff2}';
+const exts = '{jpg,jpeg,gif,png,svg,ttf,eot,woff,woff2}';
 
 const paths = {
     src: {
