@@ -17,13 +17,14 @@ const spritesmith = require('gulp.spritesmith');
 const merge = require('merge-stream');
 const empty = require('gulp-empty');
 const tsCompiler = ts.createProject('./tsconfig.json');
-
 const del = require('del');
 
-del.sync('./dist');
+const dist = './dist';
+
+del.sync(dist);
 
 const mem = new Mem();
-mem.serveBasePath = './dist'
+mem.serveBasePath = dist
 
 let isProd = false;
 
@@ -58,17 +59,17 @@ const paths = {
         template: ['**', '!src/templates/common/**/*.html'],
     },
     output: {
-        root: 'dist',
-        rev: 'dist/rev',
-        js: 'dist/js',
-        css: 'dist/css',
-        assets: 'dist/assets',
+        root: `${dist}`,
+        rev: `${dist}/rev`,
+        js: `${dist}/js`,
+        css: `${dist}/css`,
+        assets: `${dist}/assets`,
         sprites: {
             scss: 'src/scss/common/_',
             images: 'src/assets/images',
         }
     },
-    process: ['dist/rev/**/*.json', 'dist/**/*.css', 'dist/**/*.html'],
+    process: [`${dist}/rev/**/*.json`, `${dist}/**/*.css`, `${dist}/**/*.html`],
     rebaseTo: 'src/dist/'
 };
 
@@ -79,7 +80,7 @@ function reload(done) {
 
 function serve(done) {
     server.init({
-        server: './dist',
+        server: dist,
         host: '0.0.0.0',
         port: 5555,
         cors: true,
@@ -206,7 +207,7 @@ gulp.task('watch:template',
 gulp.task('process',
     () => gulp.src(paths.process)
             .pipe(revCollector())
-            .pipe(isProd ? gulp.dest('dist') : mem.dest('dist')));
+            .pipe(isProd ? gulp.dest(dist) : mem.dest(dist)));
 
 gulp.task('watch', gulp.parallel([
     'watch:assets',
