@@ -21,10 +21,8 @@ const del = require('del');
 
 const dist = './dist';
 
-del.sync(dist);
-
 const mem = new Mem();
-mem.serveBasePath = dist
+mem.serveBasePath = dist;
 
 let isProd = false;
 
@@ -89,71 +87,82 @@ function serve(done) {
     done();
 }
 
-gulp.task('vendors:js:compile',
-    () => gulp.src(paths.common.js)
-        .pipe(concat('vendors.js'))
-        .pipe(isProd ? uglify() : empty())
-        .pipe(isProd ? rev() : empty())
-        .pipe(isProd ? gulp.dest(paths.output.js) : mem.dest(paths.output.js))
-        .pipe(isProd ? rev.manifest('vendors-js-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty()));
+gulp.task('vendors:js', () => {
+    let task = gulp.src(paths.common.js)
+        .pipe(concat('vendors.js'));
 
-gulp.task('vendors:css:compile',
-    () => gulp.src(paths.common.css)
+    if (!isProd) return task.pipe(mem.dest(paths.output.js));
+
+    return task.pipe(uglify())
+        .pipe(rev())
+        .pipe(gulp.dest(paths.output.js))
+        .pipe(rev.manifest('vendors-js-manifest.json'))
+        .pipe(gulp.dest(paths.output.rev))
+});
+
+gulp.task('vendors:css', () => {
+    let task = gulp.src(paths.common.css)
         .pipe(sass().on('error', sass.logError))
         .pipe(concat('vendors.css'))
         .pipe(prefixer({
             browsers: ['> 5%', 'ie >= 9', 'ff >= 28', 'Chrome >= 21'],
             cascade: false
-        }))
-        .pipe(
-            isProd
-            ? cleanCSS({ level: { 1: { specialComments: false }}, rebaseTo: paths.rebaseTo })
-            : cleanCSS({ format: 'beautify', rebaseTo: paths.rebaseTo })
-        )
-        .pipe(isProd ? rev() : empty())
-        .pipe(isProd ? gulp.dest(paths.output.css) : mem.dest(paths.output.css))
-        .pipe(isProd ? rev.manifest('vendors-css-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty()));
-
-gulp.task('js:compile', () => {
-    const f = filter(paths.filter.js);
-    return gulp.src(paths.src.js)
-        .pipe(f)
-        .pipe(tsCompiler())
-        .pipe(isProd ? uglify() : empty())
-        .pipe(isProd ? rev() : empty())
-        .pipe(isProd ? gulp.dest(paths.output.js) : mem.dest(paths.output.js))
-        .pipe(isProd ? rev.manifest('js-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty());
+        }));
+    
+    if (!isProd) return task.pipe(cleanCSS({ format: 'beautify', rebaseTo: paths.rebaseTo }))
+            .pipe(mem.dest(paths.output.css));
+    
+    return task.pipe(cleanCSS({ level: { 1: { specialComments: false }}, rebaseTo: paths.rebaseTo }))
+        .pipe(rev())
+        .pipe(gulp.dest(paths.output.css))
+        .pipe(rev.manifest('vendors-css-manifest.json'))
+        .pipe(gulp.dest(paths.output.rev));
 });
 
-gulp.task('sass:compile', () => {
+gulp.task('js', () => {
+    const f = filter(paths.filter.js);
+    let task =  gulp.src(paths.src.js)
+        .pipe(f)
+        .pipe(tsCompiler());
+    
+    if (!isProd) return task.pipe(mem.dest(paths.output.js));
+
+    return task.pipe(uglify())
+        .pipe(rev())
+        .pipe(gulp.dest(paths.output.js))
+        .pipe(rev.manifest('js-manifest.json'))
+        .pipe(gulp.dest(paths.output.rev));
+});
+
+gulp.task('sass', () => {
     const f = filter(paths.filter.scss);
-    return gulp.src(paths.src.scss)
+    let task = gulp.src(paths.src.scss)
         .pipe(f)
         .pipe(sass().on('error', sass.logError))
         .pipe(prefixer({
             browsers: ['> 5%', 'ie >= 9', 'ff >= 28', 'Chrome >= 21'],
             cascade: false
-        }))
-        .pipe(
-            isProd
-                ? cleanCSS({ level: { 1: { specialComments: false }}, rebaseTo: paths.rebaseTo })
-                : cleanCSS({ format: 'beautify', rebaseTo: paths.rebaseTo })
-        )
-        .pipe(isProd ? rev() : empty())
-        .pipe(isProd ? gulp.dest(paths.output.css) : mem.dest(paths.output.css))
-        .pipe(isProd ? rev.manifest('css-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty());
+        }));
+
+    if (!isProd) return task.pipe(cleanCSS({ format: 'beautify', rebaseTo: paths.rebaseTo }))
+            .pipe(mem.dest(paths.output.css));
+
+    return task.pipe(cleanCSS({ level: { 1: { specialComments: false }}, rebaseTo: paths.rebaseTo }))
+        .pipe(rev())
+        .pipe(gulp.dest(paths.output.css))
+        .pipe(rev.manifest('css-manifest.json'))
+        .pipe(gulp.dest(paths.output.rev));
 });
 
-gulp.task('template:compile', () => {
+gulp.task('template', () => {
     const f = filter(paths.filter.template);
-    return gulp.src(paths.src.template)
+    let task = gulp.src(paths.src.template)
         .pipe(f)
-        .pipe(nunjucks.compile())
-        .pipe(isProd ? gulp.dest(paths.output.root) : mem.dest(paths.output.root));
+        .pipe(nunjucks.compile());
+
+    if (!isProd) return task.pipe(mem.dest(paths.output.root));
+
+    return task.pipe(gulp.dest(paths.output.root));
 });
 
 gulp.task('sprites', () => {
@@ -176,38 +185,46 @@ gulp.task('sprites', () => {
     return merge(imgStream, cssStream);
 });
 
-gulp.task('assets',
-    () => gulp.src(paths.src.assets)
-        .pipe(isProd ? rev() : empty())
-        .pipe(isProd ? gulp.dest(paths.output.assets) : mem.dest(paths.output.assets))
-        .pipe(isProd ? rev.manifest('assets-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty()));
+gulp.task('assets', () => {
+    let task = gulp.src(paths.src.assets);
+
+    if (!isProd) return task.pipe(mem.dest(paths.output.assets));
+    
+    return task.pipe(rev())
+        .pipe(gulp.dest(paths.output.assets))
+        .pipe(rev.manifest('assets-manifest.json'))
+        .pipe(gulp.dest(paths.output.rev));
+});
+
+gulp.task('process', () => {
+    let task = gulp.src(paths.process)
+        .pipe(revCollector());
+
+    if (!isProd) return task.pipe(mem.dest(dist));
+
+    return task.pipe(gulp.dest(dist));
+});
 
 gulp.task('watch:assets',
     () => gulp.watch(paths.src.assets, gulp.series('assets', reload)));
 
 gulp.task('watch:sprites',
-    () => gulp.watch(paths.src.sprites, gulp.series('sprites', gulp.parallel('assets', 'vendors:css:compile'), reload)));
+    () => gulp.watch(paths.src.sprites, gulp.series('sprites', gulp.parallel('assets', 'vendors:css'), reload)));
 
 gulp.task('watch:vendors:js',
-    () => gulp.watch(paths.common.js, gulp.series('vendors:js:compile', reload)));
+    () => gulp.watch(paths.common.js, gulp.series('vendors:js', reload)));
 
 gulp.task('watch:vendors:css',
-    () => gulp.watch(paths.common.css, gulp.series('vendors:css:compile', reload)));
+    () => gulp.watch(paths.common.css, gulp.series('vendors:css', reload)));
 
 gulp.task('watch:js',
-    () => gulp.watch(paths.src.js, gulp.series('js:compile', reload)));
+    () => gulp.watch(paths.src.js, gulp.series('js', reload)));
 
 gulp.task('watch:scss',
-    () => gulp.watch(paths.src.scss, gulp.series('sass:compile', reload)));
+    () => gulp.watch(paths.src.scss, gulp.series('sass', reload)));
 
 gulp.task('watch:template',
-    () => gulp.watch(paths.src.template, gulp.series('template:compile', reload)));
-
-gulp.task('process',
-    () => gulp.src(paths.process)
-            .pipe(revCollector())
-            .pipe(isProd ? gulp.dest(dist) : mem.dest(dist)));
+    () => gulp.watch(paths.src.template, gulp.series('template', reload)));
 
 gulp.task('watch', gulp.parallel([
     'watch:assets',
@@ -223,6 +240,7 @@ gulp.task('webserver',gulp.series(serve));
 
 gulp.task('prodMode', () => {
     isProd = true;
+    del.sync(dist);
     return gulp.src('src');
 });
 
@@ -237,11 +255,11 @@ gulp.task('dev',
         'sprites',
         gulp.parallel([
             'assets',
-            'vendors:js:compile',
-            'vendors:css:compile',
-            'js:compile',
-            'sass:compile',
-            'template:compile',
+            'vendors:js',
+            'vendors:css',
+            'js',
+            'sass',
+            'template',
         ]),
         gulp.parallel([
             'watch',
@@ -255,11 +273,11 @@ gulp.task('prod',
         'sprites',
         gulp.parallel([
             'assets',
-            'vendors:js:compile',
-            'vendors:css:compile',
-            'js:compile',
-            'sass:compile',
-            'template:compile',
+            'vendors:js',
+            'vendors:css',
+            'js',
+            'sass',
+            'template',
         ]),
         'process'
     ]));
