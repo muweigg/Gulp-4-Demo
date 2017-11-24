@@ -63,8 +63,10 @@ const paths = {
         js: 'dist/js',
         css: 'dist/css',
         assets: 'dist/assets',
-        sprites: 'src/scss/common/_',
-        images: 'src/assets/images',
+        sprites: {
+            scss: 'src/scss/common/_',
+            images: 'src/assets/images',
+        }
     },
     process: ['dist/rev/**/*.json', 'dist/**/*.css', 'dist/**/*.html'],
     rebaseTo: 'src/dist/'
@@ -165,10 +167,10 @@ gulp.task('sprites', () => {
     }));
 
     const imgStream = spriteData.img
-        .pipe(gulp.dest(paths.output.images));
+        .pipe(gulp.dest(paths.output.sprites.images));
 
     const cssStream = spriteData.css
-        .pipe(gulp.dest(paths.output.sprites));
+        .pipe(gulp.dest(paths.output.sprites.scss));
 
     return merge(imgStream, cssStream);
 });
