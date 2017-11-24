@@ -21,9 +21,8 @@ const tsCompiler = ts.createProject('./tsconfig.json');
 
 const del = require('del');
 
-del.sync('./dist');
-
 let isProd = false;
+let mode = 'dev';
 
 const urlPattern = /(url\(['"]?)[/]?()/g;
 const exts = '{jpg,jpeg,gif,png,svg,ttf,eot,woff,woff2}';
@@ -56,14 +55,24 @@ const paths = {
         template: ['**', '!src/templates/common/**/*.html'],
     },
     output: {
-        root: 'dist',
-        rev: 'dist/rev',
-        js: 'dist/js',
-        css: 'dist/css',
-        scss: 'src/scss/common',
-        sprites: 'src/scss/common/_',
-        assets: 'dist/assets',
-        images: 'src/assets/images'
+        sprites: {
+            scss: 'src/scss/common/_',
+            images: 'src/assets/images',
+        },
+        prod: {
+            root: 'dist',
+            rev: 'dist/rev',
+            js: 'dist/js',
+            css: 'dist/css',
+            assets: 'dist/assets',
+        },
+        dev: {
+            root: 'dev',
+            rev: 'dev/rev',
+            js: 'dev/js',
+            css: 'dev/css',
+            assets: 'dev/assets',
+        }
     },
     process: ['dist/rev/**/*.json', 'dist/**/*.css', 'dist/**/*.html'],
     rebaseTo: 'src/dist/'
@@ -74,9 +83,9 @@ gulp.task('vendors:js:compile',
         .pipe(concat('vendors.js'))
         .pipe(isProd ? uglify() : empty())
         .pipe(isProd ? rev() : empty())
-        .pipe(gulp.dest(paths.output.js))
+        .pipe(gulp.dest(paths.output[mode].js))
         .pipe(isProd ? rev.manifest('vendors-js-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty()));
+        .pipe(isProd ? gulp.dest(paths.output[mode].rev) : empty()));
 
 gulp.task('vendors:css:compile',
     () => gulp.src(paths.common.css)
@@ -93,9 +102,9 @@ gulp.task('vendors:css:compile',
         )
         .pipe(isProd ? rev() : empty())
         // .pipe(cssAdjustUrlPath(urlPattern))
-        .pipe(gulp.dest(paths.output.css))
+        .pipe(gulp.dest(paths.output[mode].css))
         .pipe(isProd ? rev.manifest('vendors-css-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty()));
+        .pipe(isProd ? gulp.dest(paths.output[mode].rev) : empty()));
 
 gulp.task('js:compile', () => {
     const f = filter(paths.filter.js);
@@ -105,9 +114,9 @@ gulp.task('js:compile', () => {
         .pipe(tsCompiler())
         .pipe(isProd ? uglify() : empty())
         .pipe(isProd ? rev() : empty())
-        .pipe(gulp.dest(paths.output.js))
+        .pipe(gulp.dest(paths.output[mode].js))
         .pipe(isProd ? rev.manifest('js-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty());
+        .pipe(isProd ? gulp.dest(paths.output[mode].rev) : empty());
 });
 
 gulp.task('sass:compile', () => {
@@ -126,9 +135,9 @@ gulp.task('sass:compile', () => {
         )
         .pipe(isProd ? rev() : empty())
         // .pipe(cssAdjustUrlPath(urlPattern))
-        .pipe(gulp.dest(paths.output.css))
+        .pipe(gulp.dest(paths.output[mode].css))
         .pipe(isProd ? rev.manifest('css-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty());
+        .pipe(isProd ? gulp.dest(paths.output[mode].rev) : empty());
 });
 
 gulp.task('template:compile', () => {
@@ -136,7 +145,7 @@ gulp.task('template:compile', () => {
     return gulp.src(paths.src.template)
         .pipe(f)
         .pipe(nunjucks.compile())
-        .pipe(gulp.dest(paths.output.root));
+        .pipe(gulp.dest(paths.output[mode].root));
 });
 
 gulp.task('sprites', () => {
@@ -151,10 +160,10 @@ gulp.task('sprites', () => {
     }));
 
     const imgStream = spriteData.img
-        .pipe(gulp.dest(paths.output.images));
+        .pipe(gulp.dest(paths.output['sprites'].images));
 
     const cssStream = spriteData.css
-        .pipe(gulp.dest(paths.output.sprites));
+        .pipe(gulp.dest(paths.output['sprites'].scss));
 
     return merge(imgStream, cssStream);
 });
@@ -162,9 +171,9 @@ gulp.task('sprites', () => {
 gulp.task('assets',
     () => gulp.src(paths.src.assets)
         .pipe(isProd ? rev() : empty())
-        .pipe(gulp.dest(paths.output.assets))
+        .pipe(gulp.dest(paths.output[mode].assets))
         .pipe(isProd ? rev.manifest('assets-manifest.json') : empty())
-        .pipe(isProd ? gulp.dest(paths.output.rev) : empty()));
+        .pipe(isProd ? gulp.dest(paths.output[mode].rev) : empty()));
 
 gulp.task('watch:assets',
     () => gulp.watch(paths.src.assets, gulp.parallel('assets')));
@@ -203,7 +212,7 @@ gulp.task('watch', gulp.parallel([
 ]));
 
 gulp.task('webserver',
-    () => gulp.src('dist')
+    () => gulp.src('dev')
         .pipe(server({
             defaultFile: 'index.html',
             host: 'localhost',
@@ -219,11 +228,15 @@ gulp.task('webserver',
 
 gulp.task('prodMode', () => {
     isProd = true;
+    mode = 'prod';
+    del.sync('./dist');
     return gulp.src('src');
 });
 
 gulp.task('devMode', () => {
     isProd = false;
+    mode = 'dev';
+    del.sync('./dev');
     return gulp.src('src');
 });
 
