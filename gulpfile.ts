@@ -88,7 +88,7 @@ function serve(done) {
 }
 
 gulp.task('vendors:js', () => {
-    let task = gulp.src(paths.common.js)
+    const task = gulp.src(paths.common.js)
         .pipe(concat('vendors.js'));
 
     if (!isProd) return task.pipe(mem.dest(paths.output.js));
@@ -101,7 +101,7 @@ gulp.task('vendors:js', () => {
 });
 
 gulp.task('vendors:css', () => {
-    let task = gulp.src(paths.common.css)
+    const task = gulp.src(paths.common.css)
         .pipe(sass().on('error', sass.logError))
         .pipe(concat('vendors.css'))
         .pipe(prefixer({
@@ -121,7 +121,7 @@ gulp.task('vendors:css', () => {
 
 gulp.task('js', () => {
     const f = filter(paths.filter.js);
-    let task =  gulp.src(paths.src.js)
+    const task =  gulp.src(paths.src.js)
         .pipe(f)
         .pipe(tsCompiler());
     
@@ -136,7 +136,7 @@ gulp.task('js', () => {
 
 gulp.task('sass', () => {
     const f = filter(paths.filter.scss);
-    let task = gulp.src(paths.src.scss)
+    const task = gulp.src(paths.src.scss)
         .pipe(f)
         .pipe(sass().on('error', sass.logError))
         .pipe(prefixer({
@@ -156,7 +156,7 @@ gulp.task('sass', () => {
 
 gulp.task('template', () => {
     const f = filter(paths.filter.template);
-    let task = gulp.src(paths.src.template)
+    const task = gulp.src(paths.src.template)
         .pipe(f)
         .pipe(nunjucks.compile());
 
@@ -186,7 +186,7 @@ gulp.task('sprites', () => {
 });
 
 gulp.task('assets', () => {
-    let task = gulp.src(paths.src.assets);
+    const task = gulp.src(paths.src.assets);
 
     if (!isProd) return task.pipe(mem.dest(paths.output.assets));
     
@@ -197,7 +197,7 @@ gulp.task('assets', () => {
 });
 
 gulp.task('process', () => {
-    let task = gulp.src(paths.process)
+    const task = gulp.src(paths.process)
         .pipe(revCollector());
 
     if (!isProd) return task.pipe(mem.dest(dist));
