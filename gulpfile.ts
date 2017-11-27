@@ -239,8 +239,8 @@ gulp.task('watch', gulp.parallel([
 gulp.task('webserver',gulp.series(serve));
 
 gulp.task('prodMode', () => {
-    isProd = true;
     del.sync(dist);
+    isProd = true;
     return gulp.src('src');
 });
 
