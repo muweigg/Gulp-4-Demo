@@ -17,6 +17,7 @@ const spritesmith = require('gulp.spritesmith');
 const merge = require('merge-stream');
 const empty = require('gulp-empty');
 const tsCompiler = ts.createProject('./tsconfig.json');
+const tsCommonCompiler = ts.createProject('./tsconfig.json');
 const del = require('del');
 
 const dist = './dist';
@@ -40,14 +41,15 @@ const paths = {
     },
     common: {
         js: [
+            'src/js/common/high-priority/**/*.js',
+            'src/js/common/high-priority/**/*.ts',
             'src/js/common/third-party/high-priority/**/*.js',
+            'src/js/common/third-party/high-priority/**/*.ts',
             'src/js/common/**/*.js',
+            'src/js/common/**/*.ts',
         ],
         css: [
-            'src/css/common/high-priority/**/*.css',
-            'src/scss/common/high-priority/**/*.scss',
-            'src/css/common/**/*.css',
-            'src/scss/common/*.scss',
+            'src/scss/common/common.scss',
         ],
     },
     filter: {
@@ -89,6 +91,7 @@ function serve(done) {
 
 gulp.task('vendors:js', () => {
     const task = gulp.src(paths.common.js)
+        .pipe(tsCommonCompiler())
         .pipe(concat('vendors.js'));
 
     if (!isProd) return task.pipe(mem.dest(paths.output.js));
@@ -214,14 +217,11 @@ gulp.task('watch:sprites',
 gulp.task('watch:vendors:js',
     () => gulp.watch(paths.common.js, gulp.series('vendors:js', reload)));
 
-gulp.task('watch:vendors:css',
-    () => gulp.watch([...paths.common.css, ...paths.src._], gulp.series('vendors:css', reload)));
-
 gulp.task('watch:js',
     () => gulp.watch(paths.src.js, gulp.series('js', reload)));
 
 gulp.task('watch:scss',
-    () => gulp.watch(paths.src.scss, gulp.series('sass', reload)));
+    () => gulp.watch(paths.src.scss, gulp.series(gulp.parallel('vendors:css', 'sass'), reload)));
 
 gulp.task('watch:template',
     () => gulp.watch(paths.src.template, gulp.series('template', reload)));
@@ -230,7 +230,6 @@ gulp.task('watch', gulp.parallel([
     'watch:assets',
     'watch:sprites',
     'watch:vendors:js',
-    'watch:vendors:css',
     'watch:template',
     'watch:js',
     'watch:scss'

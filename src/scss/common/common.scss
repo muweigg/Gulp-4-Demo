@@ -1,6 +1,6 @@
-@import '../_/variables';
-@import '../_/icons';
-@import '../third-party/pure/pure';
+@import './_/variables';
+@import './_/icons';
+@import './third-party/pure/pure';
 
 i.icon {
     display: inline-block;
@@ -12,3 +12,6 @@ i.icon {
         @include sprite($icon);
     }
 }
+
+@import './header';
+@import './footer';
