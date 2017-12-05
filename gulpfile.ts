@@ -137,7 +137,7 @@ gulp.task('js', () => {
         .pipe(gulp.dest(paths.output.rev));
 });
 
-gulp.task('sass', () => {
+gulp.task('scss', () => {
     const f = filter(paths.filter.scss);
     const task = gulp.src(paths.src.scss)
         .pipe(f)
@@ -221,7 +221,7 @@ gulp.task('watch:js',
     () => gulp.watch(paths.src.js, gulp.series('js', reload)));
 
 gulp.task('watch:scss',
-    () => gulp.watch(paths.src.scss, gulp.series(gulp.parallel('vendors:css', 'sass'), reload)));
+    () => gulp.watch(paths.src.scss, gulp.series(gulp.parallel('vendors:css', 'scss'), reload)));
 
 gulp.task('watch:template',
     () => gulp.watch(paths.src.template, gulp.series('template', reload)));
@@ -257,7 +257,7 @@ gulp.task('dev',
             'vendors:js',
             'vendors:css',
             'js',
-            'sass',
+            'scss',
             'template',
         ]),
         gulp.parallel([
@@ -275,7 +275,7 @@ gulp.task('prod',
             'vendors:js',
             'vendors:css',
             'js',
-            'sass',
+            'scss',
             'template',
         ]),
         'process'
