@@ -1,7 +1,6 @@
 const gulp = require('gulp');
 const server = require('browser-sync').create();
 const Mem = require('gulp-mem');
-const ts = require('gulp-typescript');
 const prefixer = require('gulp-autoprefixer');
 const concat = require('gulp-concat');
 const filter = require('gulp-filter');
@@ -16,8 +15,9 @@ const cleanCSS = require('gulp-clean-css');
 const spritesmith = require('gulp.spritesmith');
 const merge = require('merge-stream');
 const empty = require('gulp-empty');
-const tsCompiler = ts.createProject('./tsconfig.json');
-const tsCommonCompiler = ts.createProject('./tsconfig.json');
+const webpack = require('webpack');
+const ws = require('webpack-stream');
+const named = require('vinyl-named');
 const del = require('del');
 
 const dist = './dist';
@@ -40,19 +40,14 @@ const paths = {
     },
     common: {
         js: [
-            'src/js/common/high-priority/**/*.js',
-            'src/js/common/high-priority/**/*.ts',
-            'src/js/common/third-party/high-priority/**/*.js',
-            'src/js/common/third-party/high-priority/**/*.ts',
-            'src/js/common/**/*.js',
-            'src/js/common/**/*.ts',
+            'src/js/common/vendors.ts',
         ],
         css: [
             'src/scss/common/common.scss',
         ],
     },
     filter: {
-        js: ['**', '!src/js/common/**/*.js'],
+        js: ['**', '!src/js/common/**/*', '!**/*.d.ts'],
         css: ['**', '!src/css/common/**/*.css'],
         scss: ['**', '!src/scss/common/**/*.scss'],
         template: ['**', '!src/templates/common/**/*.html'],
@@ -90,7 +85,7 @@ function serve(done) {
 
 gulp.task('vendors:js', () => {
     const task = gulp.src(paths.common.js)
-        .pipe(tsCommonCompiler())
+        .pipe(ws(require('./webpack.config.js'), webpack))
         .pipe(concat('vendors.js'));
 
     if (!isProd) return task.pipe(mem.dest(paths.output.js));
@@ -125,7 +120,8 @@ gulp.task('js', () => {
     const f = filter(paths.filter.js);
     const task =  gulp.src(paths.src.js)
         .pipe(f)
-        .pipe(tsCompiler());
+        .pipe(named())
+        .pipe(ws(require('./webpack.config.js'), webpack));
     
     if (!isProd) return task.pipe(mem.dest(paths.output.js));
 
@@ -237,12 +233,14 @@ gulp.task('watch', gulp.parallel([
 gulp.task('webserver',gulp.series(serve));
 
 gulp.task('prodMode', () => {
+    process.env.NODE_ENV = "production";
     del.sync(dist);
     isProd = true;
     return gulp.src('src');
 });
 
 gulp.task('devMode', () => {
+    process.env.NODE_ENV = 'development';
     isProd = false;
     return gulp.src('src');
 });
