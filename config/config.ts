@@ -4,25 +4,43 @@ export const dist = './dist';
 
 export const paths = {
     src: {
+        js: [
+            'src/js/**/*.ts',
+            '!src/js/common/**/*',
+            '!**/*.d.ts',
+        ],
+        scss: [
+            'src/scss/**/*.scss',
+            '!src/scss/common/**/*',
+        ],
+        assets: [`src/assets/**/*.${exts}`],
+        sprites: [`src/sprites/icons/**/*.png`],
+        template: [
+            'src/templates/**/*.html',
+            '!src/templates/common/**/*.html',
+        ],
+        common: {
+            js: ['src/js/common/vendors.ts'],
+            css: ['src/scss/common/common.scss'],
+        },
+    },
+    watch: {
         js: ['src/js/**/*.ts'],
-        scss: ['src/scss/**/*.scss'],
+        scss: [
+            'src/scss/**/*.scss',
+            '!src/scss/common/**/*',
+        ],
         assets: [`src/assets/**/*.${exts}`],
         sprites: [`src/sprites/icons/**/*.png`],
         template: ['src/templates/**/*.html'],
-    },
-    common: {
-        js: [
-            'src/js/common/vendors.ts',
-        ],
-        css: [
-            'src/scss/common/common.scss',
-        ],
-    },
-    filter: {
-        js: ['**', '!src/js/common/**/*', '!**/*.d.ts'],
-        css: ['**', '!src/css/common/**/*.css'],
-        scss: ['**', '!src/scss/common/**/*.scss'],
-        template: ['**', '!src/templates/common/**/*.html'],
+        common: {
+            js: ['src/js/common/**/*.{ts,js}'],
+            css: [
+                'src/scss/common/**/*',
+                '!src/scss/common/_',
+            ],
+            _: ['src/scss/common/_/**/*'],
+        }
     },
     output: {
         root: `${dist}`,
@@ -37,4 +55,4 @@ export const paths = {
     },
     process: [`${dist}/rev/**/*.json`, `${dist}/**/*.css`, `${dist}/**/*.html`],
     rebaseTo: 'src/dist/'
-};
+}
