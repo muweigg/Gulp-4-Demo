@@ -21,7 +21,7 @@ export const paths = {
         ],
         common: {
             js: ['src/js/common/vendors.ts'],
-            css: ['src/scss/common/common.scss'],
+            css: ['src/scss/common/vendors.scss'],
         },
     },
     watch: {

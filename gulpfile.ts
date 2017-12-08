@@ -46,8 +46,7 @@ function serve(done) {
 gulp.task('vendors:js', () => {
     const task = gulp.src(paths.src.common.js)
         .pipe(named())
-        .pipe(ws(require('./config/webpack.config.js'), webpack))
-        .pipe(concat('vendors.js'));
+        .pipe(ws(require('./config/webpack.config.js'), webpack));
 
     if (!isProd) return task.pipe(mem.dest(paths.output.js));
 
@@ -61,7 +60,6 @@ gulp.task('vendors:js', () => {
 gulp.task('vendors:css', () => {
     const task = gulp.src(paths.src.common.css)
         .pipe(sass().on('error', sass.logError))
-        .pipe(concat('vendors.css'))
         .pipe(prefixer({
             browsers: ['> 5%', 'ie >= 9', 'ff >= 28', 'Chrome >= 21'],
             cascade: false
