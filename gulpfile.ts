@@ -44,9 +44,12 @@ function serve(done) {
 }
 
 gulp.task('vendors:js', () => {
+    let wsc = require('./config/webpack.config.js');
+    wsc.mode = isProd ? 'production': 'development';
+    // let mode = isProd ? 'production': 'development';
     const task = gulp.src(paths.src.common.js)
         .pipe(named())
-        .pipe(ws(require('./config/webpack.config.js'), webpack));
+        .pipe(ws(wsc, webpack));
 
     if (!isProd) return task.pipe(mem.dest(paths.output.js));
 
@@ -120,7 +123,7 @@ gulp.task('sprites', () => {
     const spriteData = gulp.src(paths.src.sprites).pipe(spritesmith({
         imgName: 'icons.png',
         cssName: '_icons.scss',
-        imgPath: '../../../assets/images/icons.png',
+        imgPath: '../../assets/images/icons.png',
         padding: 10,
         imgOpts: { quality: 100 },
         algorithm : 'top-down',
