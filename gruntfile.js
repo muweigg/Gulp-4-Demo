@@ -3,7 +3,7 @@ const grunt = require('grunt');
 grunt.initConfig({
     pure_grids: {
         responsive: {
-            dest: 'src/scss/common/third-party/pure/custom-grids-responsive.css',
+            dest: 'src/scss/common/third-party/pure/custom-grids-responsive.scss',
             options: {
                 units: [5, 12, 24],
                 mediaQueries: {

@@ -1,4 +1,4 @@
-declare var Rx: any;
+declare var rxjs: any;
 declare function isIE(): number | undefined;
 
 interface Window {

@@ -1,1 +1,3 @@
-Rx.Observable.fromEvent(document, 'click').subscribe(e => console.log(e));
+const { fromEvent } = rxjs;
+
+fromEvent(document, 'click').subscribe(e => console.log(e));
